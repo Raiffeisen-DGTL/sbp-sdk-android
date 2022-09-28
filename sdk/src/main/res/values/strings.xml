@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="banks_screen_title">Выберите банк</string>
+    <string name="recent_banks_title">Недавние</string>
+    <string name="all_banks_title">Все банки</string>
+</resources>

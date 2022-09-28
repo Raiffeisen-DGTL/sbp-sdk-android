@@ -15,7 +15,6 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -39,11 +38,7 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onCreateDialog(
         savedInstanceState: Bundle?
-    ) = object : CoreBottomSheetDialog(
-        context = requireContext(),
-        theme = theme,
-        initialBehaviorState = BottomSheetBehavior.STATE_EXPANDED
-    ) {}
+    ) = BanksBottomSheetDialog(requireContext(), theme)
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -10,6 +10,7 @@
     </style>
 
     <style name="BanksBottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:maxWidth">600dp</item>
         <item name="android:background">@drawable/banks_background</item>
     </style>
 

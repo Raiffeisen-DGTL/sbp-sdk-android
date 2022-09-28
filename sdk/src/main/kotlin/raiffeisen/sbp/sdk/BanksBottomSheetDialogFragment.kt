@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
@@ -48,22 +49,31 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val closeButton = view.findViewById<View>(R.id.close_button)
+        val clearSearchButton = view.findViewById<Button>(R.id.clearSearch_button)
+        val openDefaultBankButton = view.findViewById<Button>(R.id.openDefaultBank_button)
+        val openDefaultBankTextView = view.findViewById<TextView>(R.id.openDefaultBank_textView)
+        val searchLayout = view.findViewById<LinearLayout>(R.id.search_layout)
+        val searchEditText = view.findViewById<EditText>(R.id.search_editText)
+        val banksRecyclerView = view.findViewById<RecyclerView>(R.id.banks_recyclerView)
+
         val banksSpanCount = calculateSpanCount(
             spanDp = 100f,
             maxSpanCount = 5
         )
 
-        view.findViewById<View>(R.id.close_button).setOnClickListener {
+        openDefaultBankButton.setOnClickListener {
+            // TODO
+        }
+
+        closeButton.setOnClickListener {
             dismiss()
         }
 
-        val clearSearchButton: Button = view.findViewById(R.id.clearSearch_button)
         clearSearchButton.setOnClickListener {
             viewModel.setSearchText("")
         }
 
-        val searchLayout = view.findViewById<LinearLayout>(R.id.search_layout)
-        val searchEditText = view.findViewById<EditText>(R.id.search_editText)
         searchEditText.doOnTextChanged { text, _, _, _ ->
             viewModel.setSearchText(text?.toString().orEmpty())
         }
@@ -76,16 +86,22 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
             }
         }
 
-        val banksRecyclerView: RecyclerView = view.findViewById(R.id.banks_recyclerView)
         val banksLayoutManager = GridLayoutManager(context, banksSpanCount)
         val banksAdapter = BanksAdapter(
             onBankClicked = {
-
+                // TODO
             }
         )
 
         banksRecyclerView.layoutManager = banksLayoutManager
         banksRecyclerView.adapter = banksAdapter
+
+        banksLayoutManager.spanSizeLookup = object : SpanSizeLookup() {
+            override fun getSpanSize(position: Int) = when (banksAdapter.currentList[position]) {
+                is BanksAdapter.Item.Header -> banksSpanCount
+                is BanksAdapter.Item.Bank -> 1
+            }
+        }
 
         viewModel.state.onEach { state ->
             if (searchEditText.text?.toString().orEmpty() != state.searchText) {
@@ -93,6 +109,7 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
             }
 
             clearSearchButton.isVisible = state.searchText.isNotEmpty()
+            openDefaultBankTextView.isVisible = state.searchText.isNotEmpty()
 
             val items = mutableListOf<BanksAdapter.Item>().apply {
                 if (state.recentBanks.isNotEmpty()) {
@@ -107,13 +124,6 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
                         add(BanksAdapter.Item.Header(getString(R.string.all_banks_title)))
                     }
                     addAll(state.allBanks.map(BanksAdapter.Item::Bank))
-                }
-            }
-
-            banksLayoutManager.spanSizeLookup = object : SpanSizeLookup() {
-                override fun getSpanSize(position: Int) = when (items[position]) {
-                    is BanksAdapter.Item.Header -> banksSpanCount
-                    is BanksAdapter.Item.Bank -> 1
                 }
             }
 

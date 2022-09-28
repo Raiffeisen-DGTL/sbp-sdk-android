@@ -90,6 +90,204 @@ class BanksRepository {
                     logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
                     schema = "",
                     packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
+                ),
+                BankAppInfo(
+                    name = "asd",
+                    logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
+                    schema = "",
+                    packageName = ""
                 )
             )
         )

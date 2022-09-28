@@ -23,6 +23,7 @@ class BanksBottomSheetDialog(
 
     override fun onStart() {
         super.onStart()
+        behavior.peekHeight = 2000
         behavior.state = restoredInstanceState
             ?.getInt(SavedInstanceArgument.BEHAVIOR_STATE)
             ?: BottomSheetBehavior.STATE_EXPANDED

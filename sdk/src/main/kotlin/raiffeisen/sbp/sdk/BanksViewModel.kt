@@ -46,6 +46,10 @@ class BanksViewModel(private val banksRepository: BanksRepository) : ViewModel()
         searchState.update { text }
     }
 
+    fun saveBankRedirected(bankAppInfo: BankAppInfo) {
+        banksRepository.saveBankRedirected(bankAppInfo)
+    }
+
     private fun List<BankAppInfo>.filterByName(
         text: String
     ) = text.trim().split(" ").let { textParts ->

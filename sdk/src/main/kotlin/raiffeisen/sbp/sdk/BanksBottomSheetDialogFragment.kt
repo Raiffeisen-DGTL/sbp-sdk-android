@@ -32,7 +32,7 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
             owner = this,
             factory = viewModelFactory {
                 addInitializer(BanksViewModel::class) {
-                    BanksViewModel(BanksRepository())
+                    createViewModel()
                 }
             }
         )[BanksViewModel::class.java]
@@ -95,17 +95,7 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         val banksLayoutManager = GridLayoutManager(context, banksSpanCount)
         val banksAdapter = BanksAdapter(
-            onBankClicked = { item ->
-                try {
-                    val formattedLink = linkFromArgs.replaceBefore(':', item.info.schema)
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    intent.data = Uri.parse(formattedLink)
-                    startActivity(intent)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(context, R.string.bank_open_error, Toast.LENGTH_SHORT).show()
-                }
-            }
+            onBankClicked = { redirectToBank(it.info) }
         )
 
         banksRecyclerView.layoutManager = banksLayoutManager
@@ -145,6 +135,25 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
             banksAdapter.submitList(items)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
+
+    private fun redirectToBank(bankAppInfo: BankAppInfo) {
+        try {
+            val formattedLink = linkFromArgs.replaceBefore(':', bankAppInfo.schema)
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(formattedLink)
+            startActivity(intent)
+            viewModel.saveBankRedirected(bankAppInfo)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, R.string.bank_open_error, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun createViewModel() = BanksViewModel(
+        banksRepository = BanksRepository(
+            context = requireContext().applicationContext
+        )
+    )
 
     private fun calculateSpanCount(spanDp: Float, maxSpanCount: Int): Int {
         val metrics = resources.displayMetrics

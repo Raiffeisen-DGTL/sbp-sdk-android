@@ -1,5 +1,7 @@
 package raiffeisen.sbp.sdk
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
@@ -34,6 +37,10 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
             }
         )[BanksViewModel::class.java]
     }
+
+    private val linkFromArgs
+        get() = requireArguments().getString(LINK)
+            ?: error("BanksBottomSheetDialogFragment require LINK argument")
 
     override fun getTheme() = R.style.BanksBottomSheetDialogTheme
 
@@ -88,8 +95,16 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         val banksLayoutManager = GridLayoutManager(context, banksSpanCount)
         val banksAdapter = BanksAdapter(
-            onBankClicked = {
-                // TODO
+            onBankClicked = { item ->
+                try {
+                    val formattedLink = linkFromArgs.replaceBefore(':', item.info.schema)
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse(formattedLink)
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(context, R.string.bank_open_error, Toast.LENGTH_SHORT).show()
+                }
             }
         )
 
@@ -136,5 +151,9 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
         val spanPx = spanDp * metrics.density
         val spanCount = (metrics.widthPixels / spanPx).roundToInt()
         return if (spanCount > maxSpanCount) maxSpanCount else spanCount
+    }
+
+    companion object {
+        const val LINK = "LINK"
     }
 }

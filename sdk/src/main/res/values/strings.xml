@@ -7,4 +7,5 @@
     <string name="openDefaultBank_button">Открыть банк по умолчанию</string>
     <string name="clearSearch_button">Отмена</string>
     <string name="defaultBank_description">Не нашли свой банк?</string>
+    <string name="bank_open_error">Не удалость открыть банк</string>
 </resources>

@@ -152,7 +152,8 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private fun createViewModel() = BanksViewModel(
         banksRepository = BanksRepository(
             context = requireContext().applicationContext
-        )
+        ),
+        packageManager = requireContext().packageManager
     )
 
     private fun calculateSpanCount(spanDp: Float, maxSpanCount: Int): Int {

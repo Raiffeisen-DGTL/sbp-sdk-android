@@ -72,7 +72,7 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
         )
 
         openDefaultBankButton.setOnClickListener {
-            // TODO
+            redirectToDefaultBank()
         }
 
         closeButton.setOnClickListener {
@@ -147,6 +147,17 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
             intent.data = Uri.parse(formattedLink)
             startActivity(intent)
             viewModel.saveBankRedirected(bankAppInfo)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, R.string.bank_open_error, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun redirectToDefaultBank() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(linkFromArgs)
+            startActivity(intent)
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(context, R.string.bank_open_error, Toast.LENGTH_SHORT).show()

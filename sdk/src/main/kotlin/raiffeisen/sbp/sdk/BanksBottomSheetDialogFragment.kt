@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -63,6 +64,7 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
         val searchLayout = view.findViewById<LinearLayout>(R.id.search_layout)
         val searchEditText = view.findViewById<EditText>(R.id.search_editText)
         val banksRecyclerView = view.findViewById<RecyclerView>(R.id.banks_recyclerView)
+        val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
 
         val banksSpanCount = calculateSpanCount(
             spanDp = 100f,
@@ -131,6 +133,8 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     addAll(state.allBanks.map(BanksAdapter.Item::Bank))
                 }
             }
+
+            progressBar.animate().alpha(if (items.isEmpty()) 1f else 0f).start()
 
             banksAdapter.submitList(items)
         }.launchIn(viewLifecycleOwner.lifecycleScope)

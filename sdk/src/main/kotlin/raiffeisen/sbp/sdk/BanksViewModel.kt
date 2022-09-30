@@ -86,6 +86,6 @@ class BanksViewModel(
     data class State(
         val searchText: String,
         val recentBanks: List<BankAppInfo>,
-        val allBanks: List<BankAppInfo>,
+        val allBanks: List<BankAppInfo>
     )
 }

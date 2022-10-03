@@ -40,7 +40,7 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private val linkFromArgs
-        get() = requireArguments().getString(LINK)
+        get() = arguments?.getString(LINK)
             ?: error("BanksBottomSheetDialogFragment require LINK argument")
 
     override fun getTheme() = R.style.Sbp_BanksBottomSheetDialogTheme

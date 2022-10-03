@@ -33,7 +33,7 @@ class BanksRepository(context: Context) {
                 bankRedirectCountPrefs.getInt(it.packageName, 0) != 0
             }.sortedByDescending {
                 bankRedirectCountPrefs.getInt(it.packageName, 0)
-            }.take(4)
+            }.take(MAX_RECENT_BANKS)
         }.launchIn(coroutineScope)
     }
 
@@ -69,6 +69,9 @@ class BanksRepository(context: Context) {
     companion object {
         private const val BANK_REDIRECT_COUNT_PREFS_NAME = "bankRedirectCount"
         private const val BANKS_INFO_URL = "https://qr.nspk.ru/proxyapp/c2bmembers.json"
+
+        private const val MAX_RECENT_BANKS = 4
+
         private const val JSON_ARRAY_DICTIONARY = "dictionary"
         private const val JSON_STRING_BANK_NAME = "bankName"
         private const val JSON_STRING_LOGO_URL = "logoURL"

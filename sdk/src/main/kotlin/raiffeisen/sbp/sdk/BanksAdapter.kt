@@ -20,14 +20,14 @@ class BanksAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         Item.Header::class.hashCode() -> HeaderViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.header_item,
+                R.layout.sbp_header_item,
                 parent,
                 false
             )
         )
         Item.Bank::class.hashCode() -> BankViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.bank_item,
+                R.layout.sbp_bank_item,
                 parent,
                 false
             )
@@ -65,7 +65,7 @@ class BanksAdapter(
                 .transition(withCrossFade())
                 .transform(
                     RoundedCorners(
-                        itemView.resources.getDimensionPixelSize(R.dimen.app_icon_corner_radius)
+                        itemView.resources.getDimensionPixelSize(R.dimen.sbp_app_icon_corner_radius)
                     )
                 )
                 .into(icon)

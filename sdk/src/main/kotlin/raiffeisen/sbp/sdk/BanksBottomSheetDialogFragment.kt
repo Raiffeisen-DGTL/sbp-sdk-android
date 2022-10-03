@@ -43,7 +43,7 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
         get() = requireArguments().getString(LINK)
             ?: error("BanksBottomSheetDialogFragment require LINK argument")
 
-    override fun getTheme() = R.style.BanksBottomSheetDialogTheme
+    override fun getTheme() = R.style.Sbp_BanksBottomSheetDialogTheme
 
     override fun onCreateDialog(
         savedInstanceState: Bundle?
@@ -53,7 +53,7 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.banks_bottom_sheet, container, false)
+    ): View = inflater.inflate(R.layout.sbp_banks_bottom_sheet, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -89,9 +89,9 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                searchLayout.setBackgroundResource(R.drawable.search_border_focused)
+                searchLayout.setBackgroundResource(R.drawable.sbp_search_border_focused)
             } else {
-                searchLayout.setBackgroundResource(R.drawable.search_border)
+                searchLayout.setBackgroundResource(R.drawable.sbp_search_border)
             }
         }
 
@@ -121,14 +121,14 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
             val items = mutableListOf<BanksAdapter.Item>().apply {
                 if (state.recentBanks.isNotEmpty()) {
                     if (state.allBanks.isNotEmpty()) {
-                        add(BanksAdapter.Item.Header(getString(R.string.recent_banks_title)))
+                        add(BanksAdapter.Item.Header(getString(R.string.sbp_recent_banks_title)))
                     }
                     addAll(state.recentBanks.map(BanksAdapter.Item::Bank))
                 }
 
                 if (state.allBanks.isNotEmpty()) {
                     if (state.recentBanks.isNotEmpty()) {
-                        add(BanksAdapter.Item.Header(getString(R.string.all_banks_title)))
+                        add(BanksAdapter.Item.Header(getString(R.string.sbp_all_banks_title)))
                     }
                     addAll(state.allBanks.map(BanksAdapter.Item::Bank))
                 }
@@ -149,7 +149,7 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
             viewModel.saveBankRedirected(bankAppInfo)
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(context, R.string.bank_open_error, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.sbp_bank_open_error, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -160,7 +160,7 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
             startActivity(intent)
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(context, R.string.bank_open_error, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.sbp_bank_open_error, Toast.LENGTH_SHORT).show()
         }
     }
 

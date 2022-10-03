@@ -41,7 +41,7 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private val linkFromArgs
         get() = arguments?.getString(LINK)
-            ?: error("BanksBottomSheetDialogFragment require LINK argument")
+            ?: error("BanksBottomSheetDialogFragment require $LINK argument")
 
     override fun getTheme() = R.style.Sbp_BanksBottomSheetDialogTheme
 
@@ -67,8 +67,8 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
         val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
 
         val banksSpanCount = calculateSpanCount(
-            spanDp = 100f,
-            maxSpanCount = 5
+            spanDp = BANKS_SPAN_WIDTH_DP,
+            maxSpanCount = BANKS_MAX_SPAN_COUNT
         )
 
         openDefaultBankButton.setOnClickListener {
@@ -180,5 +180,7 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
         const val LINK = "LINK"
+        const val BANKS_SPAN_WIDTH_DP = 100f
+        const val BANKS_MAX_SPAN_COUNT = 5
     }
 }

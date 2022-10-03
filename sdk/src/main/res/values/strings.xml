@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="banks_screen_title">Выберите банк</string>
-    <string name="recent_banks_title">Недавние</string>
-    <string name="all_banks_title">Все банки</string>
+    <string name="sbp_banks_screen_title">Выберите банк</string>
+    <string name="sbp_recent_banks_title">Недавние</string>
+    <string name="sbp_all_banks_title">Все банки</string>
+    <string name="sbp_search_hint">Поиск</string>
+    <string name="sbp_openDefaultBank_button">Открыть банк по умолчанию</string>
+    <string name="sbp_clearSearch_button">Отмена</string>
+    <string name="sbp_defaultBank_description">Не нашли свой банк?</string>
+    <string name="sbp_bank_open_error">Не удалость открыть банк</string>
 </resources>

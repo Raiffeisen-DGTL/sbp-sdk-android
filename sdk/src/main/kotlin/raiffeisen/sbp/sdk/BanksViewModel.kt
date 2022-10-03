@@ -1,5 +1,6 @@
 package raiffeisen.sbp.sdk
 
+import android.content.pm.PackageManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,7 +9,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
-class BanksViewModel(private val banksRepository: BanksRepository) : ViewModel() {
+
+class BanksViewModel(
+    private val banksRepository: BanksRepository,
+    private val packageManager: PackageManager
+) : ViewModel() {
 
     private val searchState = MutableStateFlow("")
 
@@ -17,12 +22,20 @@ class BanksViewModel(private val banksRepository: BanksRepository) : ViewModel()
         banksRepository.allBanksFlow(),
         searchState
     ) { recentBanks, allBanks, searchText ->
-        val filteredRecentBanks = recentBanks.let {
+        val filteredRecentBanks = recentBanks.filter {
+            isPackageInstalled(it.packageName ?: "")
+        }.ifEmpty {
+            recentBanks
+        }.let {
             if (searchText.isEmpty()) it
             else it.filterByName(searchText)
         }
 
-        val filteredAllBanks = allBanks.let {
+        val filteredAllBanks = allBanks.filter {
+            isPackageInstalled(it.packageName ?: "")
+        }.ifEmpty {
+            allBanks
+        }.let {
             if (searchText.isEmpty()) it
             else it.filterByName(searchText)
         }
@@ -46,6 +59,10 @@ class BanksViewModel(private val banksRepository: BanksRepository) : ViewModel()
         searchState.update { text }
     }
 
+    fun saveBankRedirected(bankAppInfo: BankAppInfo) {
+        banksRepository.saveBankRedirected(bankAppInfo)
+    }
+
     private fun List<BankAppInfo>.filterByName(
         text: String
     ) = text.trim().split(" ").let { textParts ->
@@ -59,95 +76,16 @@ class BanksViewModel(private val banksRepository: BanksRepository) : ViewModel()
         }
     }
 
+    private fun isPackageInstalled(packageName: String) = try {
+        packageManager.getPackageGids(packageName)
+        true
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
+    }
+
     data class State(
         val searchText: String,
         val recentBanks: List<BankAppInfo>,
-        val allBanks: List<BankAppInfo>,
+        val allBanks: List<BankAppInfo>
     )
 }
-
-private val fakeState = BanksViewModel.State(
-    searchText = "",
-    recentBanks = listOf(
-        BankAppInfo(
-            name = "asdasdasdad",
-            logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
-            schema = "",
-            packageName = ""
-        ),
-        BankAppInfo(
-            name = "Sberbank",
-            logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
-            schema = "",
-            packageName = ""
-        ),
-        BankAppInfo(
-            name = "Tinkofff",
-            logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
-            schema = "",
-            packageName = ""
-        )
-    ),
-    allBanks = listOf(
-        BankAppInfo(
-            name = "asdasdasdasd",
-            logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
-            schema = "",
-            packageName = ""
-        ),
-        BankAppInfo(
-            name = "asasdasdasdasdasdd",
-            logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
-            schema = "",
-            packageName = ""
-        ),
-        BankAppInfo(
-            name = "asdasdasdasd",
-            logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
-            schema = "",
-            packageName = ""
-        ),
-        BankAppInfo(
-            name = "asdasdasdasdasd",
-            logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
-            schema = "",
-            packageName = ""
-        ),
-        BankAppInfo(
-            name = "asd",
-            logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
-            schema = "",
-            packageName = ""
-        ),
-        BankAppInfo(
-            name = "asd",
-            logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
-            schema = "",
-            packageName = ""
-        ),
-        BankAppInfo(
-            name = "asd",
-            logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
-            schema = "",
-            packageName = ""
-        ),
-        BankAppInfo(
-            name = "asd",
-            logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
-            schema = "",
-            packageName = ""
-        ),
-        BankAppInfo(
-            name = "asd",
-            logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
-            schema = "",
-            packageName = ""
-        ),
-        BankAppInfo(
-            name = "asd",
-            logoUrl = "https://qr.nspk.ru/proxyapp/logo/bank100000000111.png",
-            schema = "",
-            packageName = ""
-        )
-    )
-)

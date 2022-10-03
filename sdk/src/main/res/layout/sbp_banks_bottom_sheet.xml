@@ -2,10 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="500dp">
+    android:minHeight="@dimen/sbp_banks_bottom_sheet_height">
 
     <TextView
         android:id="@+id/title_textView"
@@ -13,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:text="@string/banks_screen_title"
+        android:text="@string/sbp_banks_screen_title"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -28,7 +27,7 @@
         android:layout_marginEnd="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="4dp"
-        android:src="@drawable/ic_close"
+        android:src="@drawable/sbp_ic_close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
@@ -40,7 +39,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="4dp"
-        android:background="@drawable/search_border"
+        android:background="@drawable/sbp_search_border"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@id/clearSearch_button"
@@ -54,7 +53,7 @@
             android:layout_marginStart="14dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/ic_search" />
+            android:src="@drawable/sbp_ic_search" />
 
         <EditText
             android:id="@+id/search_editText"
@@ -64,7 +63,7 @@
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:background="@null"
-            android:hint="Поиск" />
+            android:hint="@string/sbp_search_hint" />
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -73,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginEnd="4dp"
-        android:text="Отмена"
+        android:text="@string/sbp_clearSearch_button"
         android:textAllCaps="false"
         android:textColor="@android:color/black"
         android:textStyle="bold"
@@ -84,14 +83,54 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/banks_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
         android:clipToPadding="false"
         android:paddingHorizontal="16dp"
         android:paddingTop="8dp"
-        android:paddingBottom="55dp"
+        android:paddingBottom="50dp"
+        app:layout_constraintBottom_toTopOf="@id/openDefaultBank_textView"
         app:layout_constraintTop_toBottomOf="@id/search_layout"
         tools:itemCount="20"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:listitem="@layout/bank_item"
+        tools:listitem="@layout/sbp_bank_item"
         tools:spanCount="4" />
+
+    <TextView
+        android:id="@+id/openDefaultBank_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="@string/sbp_defaultBank_description"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/openDefaultBank_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/openDefaultBank_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/sbp_banks_background"
+        android:text="@string/sbp_openDefaultBank_button"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:cornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="#D5D5D6"
+        app:strokeWidth="2dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

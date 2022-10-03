@@ -15,7 +15,7 @@ import java.net.URL
 class BanksRepository(context: Context) {
 
     private val bankRedirectCountPrefs = context.getSharedPreferences(
-        "bankRedirectCount",
+        BANK_REDIRECT_COUNT_PREFS_NAME,
         Context.MODE_PRIVATE
     )
 
@@ -53,20 +53,26 @@ class BanksRepository(context: Context) {
     private fun fetchBanks(): List<BankAppInfo> {
         val response = URL(BANKS_INFO_URL).readText()
         val json = JSONObject(response)
-        val jsonBanks = json.getJSONArray("dictionary")
+        val jsonBanks = json.getJSONArray(JSON_ARRAY_DICTIONARY)
         return List(jsonBanks.length()) { index ->
             val jsonBank = jsonBanks.getJSONObject(index)
             BankAppInfo(
-                name = jsonBank.getString("bankName"),
-                logoUrl = jsonBank.getString("logoURL"),
-                schema = jsonBank.getString("schema"),
-                packageName = if (jsonBank.has("package_name"))
-                    jsonBank.getString("package_name") else null
+                name = jsonBank.getString(JSON_STRING_BANK_NAME),
+                logoUrl = jsonBank.getString(JSON_STRING_LOGO_URL),
+                schema = jsonBank.getString(JSON_STRING_SCHEMA),
+                packageName = if (jsonBank.has(JSON_STRING_PACKAGE_NAME))
+                    jsonBank.getString(JSON_STRING_PACKAGE_NAME) else null
             )
         }
     }
 
     companion object {
+        private const val BANK_REDIRECT_COUNT_PREFS_NAME = "bankRedirectCount"
         private const val BANKS_INFO_URL = "https://qr.nspk.ru/proxyapp/c2bmembers.json"
+        private const val JSON_ARRAY_DICTIONARY = "dictionary"
+        private const val JSON_STRING_BANK_NAME = "bankName"
+        private const val JSON_STRING_LOGO_URL = "logoURL"
+        private const val JSON_STRING_SCHEMA = "schema"
+        private const val JSON_STRING_PACKAGE_NAME = "package_name"
     }
 }

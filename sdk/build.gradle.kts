@@ -41,48 +41,50 @@ dependencies {
 tasks.create("raiffeisenSbpSdkPreload") {
     group = "build"
 
-    val response = URL("https://qr.nspk.ru/proxyapp/c2bmembers.json").readText()
-    val json = JSONObject(response)
-    val banks = json.getJSONArray("dictionary")
+    doFirst {
+        val response = URL("https://qr.nspk.ru/proxyapp/c2bmembers.json").readText()
+        val json = JSONObject(response)
+        val banks = json.getJSONArray("dictionary")
 
-    val classText = buildString {
-        append("package raiffeisen.sbp.sdk")
-        appendLine()
-        appendLine()
-        append("object PreloadedBanks {")
-        appendLine()
-        append("\tval banks = listOf(")
-        repeat(banks.length()) {
-            val bank = banks.getJSONObject(it)
+        val classText = buildString {
+            append("package raiffeisen.sbp.sdk")
             appendLine()
-            append("\t\tBankAppInfo(")
             appendLine()
-            append("\t\t\tname = \"${bank.getString("bankName")}\",")
+            append("object PreloadedBanks {")
             appendLine()
-            append("\t\t\tlogoUrl = \"${bank.getString("logoURL")}\",")
+            append("\tval banks = listOf(")
+            repeat(banks.length()) {
+                val bank = banks.getJSONObject(it)
+                appendLine()
+                append("\t\tBankAppInfo(")
+                appendLine()
+                append("\t\t\tname = \"${bank.getString("bankName")}\",")
+                appendLine()
+                append("\t\t\tlogoUrl = \"${bank.getString("logoURL")}\",")
+                appendLine()
+                append("\t\t\tschema = \"${bank.getString("schema")}\",")
+                appendLine()
+                append(
+                    "\t\t\tpackageName = ${
+                        if (bank.has("package_name")) "\"${bank.getString("package_name")}\""
+                        else "null"
+                    },"
+                )
+                appendLine()
+                append("\t\t),")
+            }
             appendLine()
-            append("\t\t\tschema = \"${bank.getString("schema")}\",")
+            append("\t)")
             appendLine()
-            append(
-                "\t\t\tpackageName = ${
-                    if (bank.has("package_name")) "\"${bank.getString("package_name")}\""
-                    else "null"
-                },"
-            )
-            appendLine()
-            append("\t\t),")
+            append("}")
         }
-        appendLine()
-        append("\t)")
-        appendLine()
-        append("}")
-    }
 
-    layout.buildDirectory.dir(codegenPackagePath).get().asFile.mkdirs()
-    val file = layout.buildDirectory.dir("$codegenPackagePath/PreloadedBanks.kt").get().asFile
-    file.delete()
-    file.createNewFile()
-    file.writeText(classText)
+        layout.buildDirectory.dir(codegenPackagePath).get().asFile.mkdirs()
+        val file = layout.buildDirectory.dir("$codegenPackagePath/PreloadedBanks.kt").get().asFile
+        file.delete()
+        file.createNewFile()
+        file.writeText(classText)
+    }
 }
 
 tasks.preBuild {

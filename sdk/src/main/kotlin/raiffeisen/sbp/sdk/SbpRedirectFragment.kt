@@ -1,9 +1,11 @@
 package raiffeisen.sbp.sdk
 
+import android.app.Dialog
+import android.content.ActivityNotFoundException
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
@@ -27,7 +30,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlin.math.roundToInt
 
 
-internal class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
+class SbpRedirectFragment : BottomSheetDialogFragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -42,19 +45,22 @@ internal class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private val linkFromArgs
         get() = arguments?.getString(LINK)
-            ?: error("BanksBottomSheetDialogFragment require $LINK argument")
+            ?: error("SbpRedirectFragment require $LINK argument")
+
+    private val resultKeyFromArgs
+        get() = arguments?.getString(RESULT_KEY) ?: DEFAULT_RESULT_KEY
 
     override fun getTheme() = R.style.Sbp_BanksBottomSheetDialogTheme
 
     override fun onCreateDialog(
         savedInstanceState: Bundle?
-    ) = BanksBottomSheetDialog(requireContext(), theme)
+    ): Dialog = BanksBottomSheetDialog(requireContext(), theme)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.sbp_banks_bottom_sheet, container, false)
+    ): View = inflater.inflate(R.layout.sbp_redirect_fragment, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -141,6 +147,14 @@ internal class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        parentFragmentManager.setFragmentResult(
+            resultKeyFromArgs,
+            bundleOf(RESULT_DIALOG_DISMISSED to null)
+        )
+    }
+
     private fun redirectToBank(bankAppInfo: BankAppInfo) {
         try {
             val formattedLink = linkFromArgs.replaceBefore(':', bankAppInfo.schema)
@@ -148,11 +162,21 @@ internal class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
             intent.data = Uri.parse(formattedLink)
             startActivity(intent)
             viewModel.saveBankRedirected(bankAppInfo)
-            RaiffeisenSbpSdk.notifyRedirectedToBankApp()
-            dismiss()
+            parentFragmentManager.setFragmentResult(
+                resultKeyFromArgs,
+                bundleOf(RESULT_REDIRECTED_TO_BANK to bankAppInfo.packageName)
+            )
+        } catch (e: ActivityNotFoundException) {
+            goToAppInStore(bankAppInfo.packageName ?: "")
+            parentFragmentManager.setFragmentResult(
+                resultKeyFromArgs,
+                bundleOf(RESULT_REDIRECTED_TO_DOWNLOAD_BANK to bankAppInfo.packageName)
+            )
         } catch (e: Exception) {
-            e.printStackTrace()
-            Toast.makeText(context, R.string.sbp_bank_open_error, Toast.LENGTH_SHORT).show()
+            parentFragmentManager.setFragmentResult(
+                resultKeyFromArgs,
+                bundleOf(RESULT_REDIRECT_TO_BANK_FAILED to bankAppInfo.packageName)
+            )
         }
     }
 
@@ -161,11 +185,28 @@ internal class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(linkFromArgs)
             startActivity(intent)
-            RaiffeisenSbpSdk.notifyRedirectedToBankApp()
-            dismiss()
+            parentFragmentManager.setFragmentResult(
+                resultKeyFromArgs,
+                bundleOf(RESULT_REDIRECTED_TO_DEFAULT_BANK to null)
+            )
         } catch (e: Exception) {
-            e.printStackTrace()
-            Toast.makeText(context, R.string.sbp_bank_open_error, Toast.LENGTH_SHORT).show()
+            parentFragmentManager.setFragmentResult(
+                resultKeyFromArgs,
+                bundleOf(RESULT_REDIRECT_TO_BANK_FAILED to null)
+            )
+        }
+    }
+
+    private fun goToAppInStore(packageName: String) {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+        } catch (e: ActivityNotFoundException) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=$packageName")
+                )
+            )
         }
     }
 
@@ -184,8 +225,59 @@ internal class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        const val LINK = "LINK"
-        const val BANKS_SPAN_WIDTH_DP = 100f
-        const val BANKS_MAX_SPAN_COUNT = 5
+        private const val BANKS_SPAN_WIDTH_DP = 100f
+        private const val BANKS_MAX_SPAN_COUNT = 5
+        private const val LINK = "link"
+        private const val RESULT_KEY = "resultKey"
+        const val DEFAULT_RESULT_KEY = "sbpSdkResult"
+
+        const val RESULT_REDIRECTED_TO_BANK = "REDIRECTED_TO_BANK"
+        const val RESULT_REDIRECTED_TO_DEFAULT_BANK = "REDIRECTED_TO_DEFAULT_BANK"
+        const val RESULT_REDIRECTED_TO_DOWNLOAD_BANK = "REDIRECTED_TO_DOWNLOAD_BANK"
+        const val RESULT_REDIRECT_TO_BANK_FAILED = "RESULT_REDIRECTED_TO_BANK_FAILED"
+        const val RESULT_DIALOG_DISMISSED = "RESULT_DIALOG_DISMISSED"
+
+        fun newInstance(
+            link: String,
+            resultKey: String = DEFAULT_RESULT_KEY
+        ) = SbpRedirectFragment().apply {
+            arguments = bundleOf(
+                LINK to link,
+                RESULT_KEY to resultKey,
+            )
+        }
+
+        fun readResult(bundle: Bundle): Result = when {
+            bundle.containsKey(RESULT_REDIRECTED_TO_BANK) -> {
+                Result.RedirectedToBank(
+                    bundle.getString(RESULT_REDIRECTED_TO_BANK)!!
+                )
+            }
+            bundle.containsKey(RESULT_REDIRECTED_TO_DOWNLOAD_BANK) -> {
+                Result.RedirectedToDownloadBank(
+                    bundle.getString(
+                        RESULT_REDIRECTED_TO_DOWNLOAD_BANK
+                    )!!
+                )
+            }
+            bundle.containsKey(RESULT_REDIRECTED_TO_DEFAULT_BANK) -> {
+                Result.RedirectedToDefaultBank
+            }
+            bundle.containsKey(RESULT_REDIRECT_TO_BANK_FAILED) -> {
+                Result.RedirectToBankFailed(bundle.getString(RESULT_REDIRECT_TO_BANK_FAILED))
+            }
+            bundle.containsKey(RESULT_DIALOG_DISMISSED) -> {
+                Result.DialogDismissed
+            }
+            else -> error("Cant read result")
+        }
+    }
+
+    sealed interface Result {
+        class RedirectedToBank(val packageName: String?) : Result
+        class RedirectedToDownloadBank(val packageName: String?) : Result
+        object RedirectedToDefaultBank : Result
+        class RedirectToBankFailed(val packageName: String?) : Result
+        object DialogDismissed : Result
     }
 }

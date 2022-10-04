@@ -7,5 +7,4 @@
     <string name="sbp_openDefaultBank_button">Открыть банк по умолчанию</string>
     <string name="sbp_clearSearch_button">Отмена</string>
     <string name="sbp_defaultBank_description">Не нашли свой банк?</string>
-    <string name="sbp_bank_open_error">Не удалость открыть банк</string>
 </resources>

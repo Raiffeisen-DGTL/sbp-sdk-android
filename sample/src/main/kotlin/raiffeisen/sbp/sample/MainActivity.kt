@@ -2,23 +2,40 @@ package raiffeisen.sbp.sample
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
-import raiffeisen.sbp.sdk.BanksBottomSheetDialogFragment
+import raiffeisen.sbp.sdk.RaiffeisenSbpSdk
 
 class MainActivity : AppCompatActivity(R.layout.main_acitivty) {
 
-    val link = "https://qr.nspk.ru/AD100004BAL7227F9BNP6KNE007J9B3K?type=02&bank=100000000007&sum=1&cur=RUB&crc=AB75"
+    private val sdkListener = object : RaiffeisenSbpSdk.Listener {
+        override fun onRedirectedToBankApp() {
+            Toast.makeText(
+                this@MainActivity,
+                "onRedirectedToBankApp",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val linkEditText: EditText = findViewById(R.id.link_editText)
         val payButton: Button = findViewById(R.id.pay_button)
+
         payButton.setOnClickListener {
-            BanksBottomSheetDialogFragment().apply {
-                arguments = bundleOf(
-                    BanksBottomSheetDialogFragment.LINK to link
-                )
-            }.show(supportFragmentManager, null)
+            RaiffeisenSbpSdk.showBankChooser(
+                supportFragmentManager,
+                linkEditText.text.toString()
+            )
         }
+
+        RaiffeisenSbpSdk.addListener(sdkListener)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        RaiffeisenSbpSdk.removeListener(sdkListener)
     }
 }

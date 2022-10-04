@@ -3,6 +3,7 @@ package raiffeisen.sbp.sdk
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +27,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlin.math.roundToInt
 
 
-class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
+internal class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -147,6 +148,8 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
             intent.data = Uri.parse(formattedLink)
             startActivity(intent)
             viewModel.saveBankRedirected(bankAppInfo)
+            RaiffeisenSbpSdk.notifyRedirectedToBankApp()
+            dismiss()
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(context, R.string.sbp_bank_open_error, Toast.LENGTH_SHORT).show()
@@ -158,6 +161,8 @@ class BanksBottomSheetDialogFragment : BottomSheetDialogFragment() {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(linkFromArgs)
             startActivity(intent)
+            RaiffeisenSbpSdk.notifyRedirectedToBankApp()
+            dismiss()
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(context, R.string.sbp_bank_open_error, Toast.LENGTH_SHORT).show()

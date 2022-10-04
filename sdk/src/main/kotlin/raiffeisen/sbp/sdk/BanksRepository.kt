@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.net.URL
 
-class BanksRepository(context: Context) {
+internal class BanksRepository(context: Context) {
 
     private val bankRedirectCountPrefs = context.getSharedPreferences(
         BANK_REDIRECT_COUNT_PREFS_NAME,

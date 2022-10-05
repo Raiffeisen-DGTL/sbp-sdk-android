@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 
-class BanksViewModel(
+internal class BanksViewModel(
     private val banksRepository: BanksRepository,
     private val packageManager: PackageManager
 ) : ViewModel() {

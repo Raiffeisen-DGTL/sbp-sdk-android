@@ -1,6 +1,6 @@
 package raiffeisen.sbp.sdk
 
-data class BankAppInfo(
+internal data class BankAppInfo(
     val name: String,
     val logoUrl: String,
     val schema: String,

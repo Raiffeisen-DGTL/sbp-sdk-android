@@ -50,7 +50,7 @@ tasks.create("raiffeisenSbpSdkPreload") {
             append("package raiffeisen.sbp.sdk")
             appendLine()
             appendLine()
-            append("object PreloadedBanks {")
+            append("internal object PreloadedBanks {")
             appendLine()
             append("\tval banks = listOf(")
             repeat(banks.length()) {

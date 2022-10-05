@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class BanksBottomSheetDialog(
+internal class BanksBottomSheetDialog(
     context: Context,
     theme: Int
 ) : BottomSheetDialog(context, theme) {

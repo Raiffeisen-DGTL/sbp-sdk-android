@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 
 
-class BanksAdapter(
+internal class BanksAdapter(
     private val onBankClicked: (Item.Bank) -> Unit
 ) : ListAdapter<BanksAdapter.Item, ViewHolder>(ItemDiffUtilCallback) {
 

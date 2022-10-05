@@ -20,12 +20,16 @@ class BanksRepository(context: Context) {
     )
 
     private val recentBanksState = MutableStateFlow(emptyList<BankAppInfo>())
-    private val allBanksState = MutableStateFlow(emptyList<BankAppInfo>())
+    private val allBanksState = MutableStateFlow(PreloadedBanks.banks)
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     init {
         coroutineScope.launch {
-            allBanksState.value = fetchBanks()
+            try {
+                allBanksState.value = fetchBanks()
+            } catch (e: Exception) {
+                allBanksState.value = PreloadedBanks.banks
+            }
         }
 
         allBanksState.onEach { banks ->

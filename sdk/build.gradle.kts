@@ -1,3 +1,4 @@
+import org.gradle.jvm.tasks.Jar
 import org.json.JSONObject
 import java.net.URL
 import java.util.Properties
@@ -26,6 +27,14 @@ android {
         getByName("main") {
             java {
                 srcDir(codegenDirPath)
+            }
+        }
+    }
+
+    publishing {
+        multipleVariants {
+            singleVariant("release") {
+                withSourcesJar()
             }
         }
     }
@@ -82,7 +91,10 @@ publishing {
         }
     }
 
-    publications.withType<MavenPublication> {
+    publications.register<MavenPublication>("release") {
+        version = "1.0.0"
+        group = "ru.raiffeisen"
+        artifactId = "sbp-sdk"
         artifact(javadocJar.get())
         pom {
             name.set("Raiffeisen SBP SDK") // TODO: put what need
@@ -106,11 +118,17 @@ publishing {
                 url.set("https://github.com/user/repo") // TODO: put what need
             }
         }
+
+        afterEvaluate {
+            from(components["release"])
+        }
     }
 }
 
 signing {
-    sign(publishing.publications)
+    if (getExtraString("signing.keyId") != null) {
+        sign(publishing.publications)
+    }
 }
 
 tasks.create("raiffeisenSbpSdkPreload") {

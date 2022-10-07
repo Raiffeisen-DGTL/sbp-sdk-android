@@ -97,25 +97,25 @@ publishing {
         artifactId = "sbp-sdk"
         artifact(javadocJar.get())
         pom {
-            name.set("Raiffeisen SBP SDK") // TODO: put what need
-            description.set("Raiffeisen SBP SDK desc") // TODO: put what need
-            url.set("https://github.com/user/repo") // TODO: put what need
+            name.set("ecom-sdk-android")
+            description.set("Android SDK платежной формы СБП")
+            url.set("https://github.com/Raiffeisen-DGTL/ecom-sdk-android")
 
             licenses {
                 license {
-                    name.set("MIT") // TODO: put what need
-                    url.set("https://opensource.org/licenses/MIT") // TODO: put what need
+                    name.set("MIT")
+                    url.set("https://github.com/Raiffeisen-DGTL/ecom-sdk-android/LICENSE.md")
                 }
             }
             developers {
                 developer {
-                    id.set("Dev") // TODO: put what need
-                    name.set("Dev") // TODO: put what need
-                    email.set("dev@dev.dev") // TODO: put what need
+                    id.set("epicarchitect")
+                    name.set("Alexander Kolmachikhin")
+                    email.set("akolmachikhin@icerockdev.com")
                 }
             }
             scm {
-                url.set("https://github.com/user/repo") // TODO: put what need
+                url.set("https://github.com/Raiffeisen-DGTL/ecom-sdk-android")
             }
         }
 

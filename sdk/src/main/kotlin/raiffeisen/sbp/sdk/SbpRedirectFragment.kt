@@ -71,7 +71,6 @@ class SbpRedirectFragment : BottomSheetDialogFragment() {
         val searchLayout = view.findViewById<LinearLayout>(R.id.search_layout)
         val searchEditText = view.findViewById<EditText>(R.id.search_editText)
         val banksRecyclerView = view.findViewById<RecyclerView>(R.id.banks_recyclerView)
-        val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
 
         val banksSpanCount = calculateSpanCount(
             spanDp = BANKS_SPAN_WIDTH_DP,
@@ -140,8 +139,6 @@ class SbpRedirectFragment : BottomSheetDialogFragment() {
                     addAll(state.allBanks.map(BanksAdapter.Item::Bank))
                 }
             }
-
-            progressBar.animate().alpha(if (items.isEmpty()) 1f else 0f).start()
 
             banksAdapter.submitList(items)
         }.launchIn(viewLifecycleOwner.lifecycleScope)

@@ -31,6 +31,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 
@@ -46,6 +47,8 @@ class SbpRedirectFragment : BottomSheetDialogFragment() {
             }
         )[BanksViewModel::class.java]
     }
+
+    private val playMarketAppChecker = PlayMarketAppChecker()
 
     private val linkFromArgs
         get() = arguments?.getString(LINK)
@@ -178,6 +181,15 @@ class SbpRedirectFragment : BottomSheetDialogFragment() {
     }
 
     private fun redirectToBank(bankAppInfo: BankAppInfo) {
+        if (bankAppInfo.packageName == null) {
+            parentFragmentManager.setFragmentResult(
+                resultKeyFromArgs,
+                bundleOf(RESULT_REDIRECT_TO_BANK_FAILED to null)
+            )
+
+            return
+        }
+
         try {
             val formattedLink = linkFromArgs.replaceBefore(':', bankAppInfo.schema)
             val intent = Intent(Intent.ACTION_VIEW)
@@ -189,11 +201,20 @@ class SbpRedirectFragment : BottomSheetDialogFragment() {
                 bundleOf(RESULT_REDIRECTED_TO_BANK to bankAppInfo.packageName)
             )
         } catch (e: ActivityNotFoundException) {
-            goToAppInStore(bankAppInfo.packageName ?: "")
-            parentFragmentManager.setFragmentResult(
-                resultKeyFromArgs,
-                bundleOf(RESULT_REDIRECTED_TO_DOWNLOAD_BANK to bankAppInfo.packageName)
-            )
+            lifecycleScope.launch {
+                if (playMarketAppChecker.checkPackageExists(bankAppInfo.packageName)) {
+                    goToAppInPlayMarket(bankAppInfo.packageName)
+                    parentFragmentManager.setFragmentResult(
+                        resultKeyFromArgs,
+                        bundleOf(RESULT_REDIRECTED_TO_DOWNLOAD_BANK to bankAppInfo.packageName)
+                    )
+                } else {
+                    parentFragmentManager.setFragmentResult(
+                        resultKeyFromArgs,
+                        bundleOf(RESULT_REDIRECT_TO_BANK_FAILED to bankAppInfo.packageName)
+                    )
+                }
+            }
         } catch (e: Exception) {
             parentFragmentManager.setFragmentResult(
                 resultKeyFromArgs,
@@ -219,7 +240,7 @@ class SbpRedirectFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun goToAppInStore(packageName: String) {
+    private fun goToAppInPlayMarket(packageName: String) {
         try {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
         } catch (e: ActivityNotFoundException) {

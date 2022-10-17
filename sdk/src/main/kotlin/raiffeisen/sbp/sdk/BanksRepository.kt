@@ -19,6 +19,11 @@ internal class BanksRepository(context: Context) {
         Context.MODE_PRIVATE
     )
 
+    private val bankRedirectTimePrefs = context.getSharedPreferences(
+        BANK_REDIRECT_TIME_PREFS_NAME,
+        Context.MODE_PRIVATE
+    )
+
     private val recentBanksState = MutableStateFlow(emptyList<BankAppInfo>())
     private val allBanksState = MutableStateFlow(PreloadedBanks.banks)
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
@@ -35,9 +40,12 @@ internal class BanksRepository(context: Context) {
         allBanksState.onEach { banks ->
             recentBanksState.value = banks.filter {
                 bankRedirectCountPrefs.getInt(it.packageName, 0) != 0
-            }.sortedByDescending {
-                bankRedirectCountPrefs.getInt(it.packageName, 0)
-            }.take(MAX_RECENT_BANKS)
+            }.sortedWith(
+                compareBy(
+                    { bankRedirectCountPrefs.getInt(it.packageName, 0) },
+                    { bankRedirectTimePrefs.getLong(it.packageName, 0) }
+                )
+            ).reversed().take(MAX_RECENT_BANKS)
         }.launchIn(coroutineScope)
     }
 
@@ -46,6 +54,13 @@ internal class BanksRepository(context: Context) {
             putInt(
                 bankAppInfo.packageName,
                 bankRedirectCountPrefs.getInt(bankAppInfo.packageName, 0) + 1
+            )
+        }
+
+        bankRedirectTimePrefs.edit {
+            putLong(
+                bankAppInfo.packageName,
+                System.currentTimeMillis()
             )
         }
     }
@@ -72,6 +87,7 @@ internal class BanksRepository(context: Context) {
 
     companion object {
         private const val BANK_REDIRECT_COUNT_PREFS_NAME = "bankRedirectCount"
+        private const val BANK_REDIRECT_TIME_PREFS_NAME = "bankRedirectTime"
         private const val BANKS_INFO_URL = "https://qr.nspk.ru/proxyapp/c2bmembers.json"
 
         private const val MAX_RECENT_BANKS = 4

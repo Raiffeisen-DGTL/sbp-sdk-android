@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="@dimen/sbp_banks_bottom_sheet_height">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/title_textView"
@@ -63,7 +62,10 @@
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:background="@null"
-            android:hint="@string/sbp_search_hint" />
+            android:hint="@string/sbp_search_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1" />
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -88,7 +90,7 @@
         android:clipToPadding="false"
         android:paddingHorizontal="16dp"
         android:paddingTop="8dp"
-        android:paddingBottom="50dp"
+        android:paddingBottom="8dp"
         app:layout_constraintBottom_toTopOf="@id/openDefaultBank_textView"
         app:layout_constraintTop_toBottomOf="@id/search_layout"
         tools:itemCount="20"
@@ -102,7 +104,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:text="@string/sbp_defaultBank_description"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/openDefaultBank_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

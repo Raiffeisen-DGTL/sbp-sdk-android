@@ -1,7 +1,7 @@
 package raiffeisen.sbp.sdk
 
-import android.app.Dialog
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -9,14 +9,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +26,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -52,10 +56,6 @@ class SbpRedirectFragment : BottomSheetDialogFragment() {
 
     override fun getTheme() = R.style.Sbp_BanksBottomSheetDialogTheme
 
-    override fun onCreateDialog(
-        savedInstanceState: Bundle?
-    ): Dialog = BanksBottomSheetDialog(requireContext(), theme)
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,6 +71,8 @@ class SbpRedirectFragment : BottomSheetDialogFragment() {
         val searchLayout = view.findViewById<LinearLayout>(R.id.search_layout)
         val searchEditText = view.findViewById<EditText>(R.id.search_editText)
         val banksRecyclerView = view.findViewById<RecyclerView>(R.id.banks_recyclerView)
+
+        setupBottomSheetSize()
 
         val banksSpanCount = calculateSpanCount(
             spanDp = BANKS_SPAN_WIDTH_DP,
@@ -99,6 +101,13 @@ class SbpRedirectFragment : BottomSheetDialogFragment() {
             } else {
                 searchLayout.setBackgroundResource(R.drawable.sbp_search_border)
             }
+        }
+
+        searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                hideKeyboard()
+                true
+            } else false
         }
 
         val banksLayoutManager = GridLayoutManager(context, banksSpanCount)
@@ -146,10 +155,26 @@ class SbpRedirectFragment : BottomSheetDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
+        hideKeyboard()
         parentFragmentManager.setFragmentResult(
             resultKeyFromArgs,
             bundleOf(RESULT_DIALOG_DISMISSED to null)
         )
+    }
+
+    private fun setupBottomSheetSize() {
+        (dialog as BottomSheetDialog).apply {
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)?.apply {
+                updateLayoutParams {
+                    height = (resources.displayMetrics.heightPixels / 2).let { newHeight ->
+                        val minHeight = resources.getDimension(R.dimen.sbp_bottom_sheet_min_height)
+                        if (newHeight < minHeight) minHeight.toInt()
+                        else newHeight
+                    }
+                }
+            }
+        }
     }
 
     private fun redirectToBank(bankAppInfo: BankAppInfo) {
@@ -219,6 +244,11 @@ class SbpRedirectFragment : BottomSheetDialogFragment() {
         val spanPx = spanDp * metrics.density
         val spanCount = (metrics.widthPixels / spanPx).roundToInt()
         return if (spanCount > maxSpanCount) maxSpanCount else spanCount
+    }
+
+    private fun hideKeyboard() {
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     companion object {

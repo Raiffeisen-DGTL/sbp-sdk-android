@@ -16,12 +16,11 @@
 
     <TextView
         android:id="@+id/name_textView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:paddingHorizontal="4dp"
         android:ellipsize="end"
-        android:gravity="center"
         android:maxLines="1"
         android:textAppearance="?attr/textAppearanceBody1"
         tools:text="@tools:sample/lorem/random" />

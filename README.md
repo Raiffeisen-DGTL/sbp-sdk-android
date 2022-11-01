@@ -14,7 +14,7 @@ allprojects {
 Подключение в dependencies:
 ```kotlin
 dependencies {
-    implementation("ru.raiffeisen:sbp-sdk:1.0.0")
+    implementation("ru.raiffeisen:sbp-sdk-android:1.0.0")
 }
 ```
 

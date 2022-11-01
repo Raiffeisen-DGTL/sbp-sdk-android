@@ -1,4 +1,4 @@
-package raiffeisen.sbp.sdk
+package raiffeisen.sbp.sdk.android
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -32,6 +32,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import raiffeisen.sbp.sdk.R
 import kotlin.math.roundToInt
 
 

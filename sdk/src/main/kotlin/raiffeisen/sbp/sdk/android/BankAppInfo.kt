@@ -1,4 +1,4 @@
-package raiffeisen.sbp.sdk
+package raiffeisen.sbp.sdk.android
 
 internal data class BankAppInfo(
     val name: String,

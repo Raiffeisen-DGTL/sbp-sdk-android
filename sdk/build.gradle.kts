@@ -12,7 +12,7 @@ plugins {
 }
 
 val codegenDirPath = "${buildDir}/generated/source/raiffeisenSbpSdk/main"
-val codegenPackagePath = "$codegenDirPath/raiffeisen/sbp/sdk"
+val codegenPackagePath = "$codegenDirPath/raiffeisen/sbp/sdk/android"
 
 android {
     namespace = "raiffeisen.sbp.sdk"
@@ -94,7 +94,7 @@ publishing {
     publications.register<MavenPublication>("release") {
         version = "1.0.0"
         group = "ru.raiffeisen"
-        artifactId = "sbp-sdk"
+        artifactId = "sbp-sdk-android"
         artifact(javadocJar.get())
         pom {
             name.set("ecom-sdk-android")
@@ -140,7 +140,7 @@ tasks.create("raiffeisenSbpSdkPreload") {
         val banks = json.getJSONArray("dictionary")
 
         val classText = buildString {
-            append("package raiffeisen.sbp.sdk")
+            append("package raiffeisen.sbp.sdk.android")
             appendLine()
             appendLine()
             append("internal object PreloadedBanks {")

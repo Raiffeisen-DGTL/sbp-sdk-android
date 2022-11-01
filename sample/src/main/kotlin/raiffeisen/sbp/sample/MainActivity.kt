@@ -5,7 +5,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import raiffeisen.sbp.sdk.SbpRedirectFragment
+import raiffeisen.sbp.sdk.android.SbpRedirectFragment
 
 class MainActivity : AppCompatActivity(R.layout.main_acitivty) {
 

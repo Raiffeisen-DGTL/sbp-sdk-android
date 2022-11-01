@@ -1,4 +1,4 @@
-package raiffeisen.sbp.sdk
+package raiffeisen.sbp.sdk.android
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

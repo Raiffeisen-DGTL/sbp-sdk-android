@@ -15,7 +15,7 @@ val codegenDirPath = "${buildDir}/generated/source/raiffeisenSbpSdk/main"
 val codegenPackagePath = "$codegenDirPath/raiffeisen/sbp/sdk/android"
 
 android {
-    namespace = "raiffeisen.sbp.sdk"
+    namespace = "raiffeisen.sbp.sdk.android"
     compileSdk = 33
 
     defaultConfig {

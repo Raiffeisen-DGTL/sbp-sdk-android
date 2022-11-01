@@ -1,4 +1,4 @@
-package raiffeisen.sbp.sdk
+package raiffeisen.sbp.sdk.android
 
 import android.content.ActivityNotFoundException
 import android.content.Context

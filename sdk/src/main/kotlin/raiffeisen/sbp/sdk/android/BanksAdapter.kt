@@ -1,4 +1,4 @@
-package raiffeisen.sbp.sdk
+package raiffeisen.sbp.sdk.android
 
 import android.view.LayoutInflater
 import android.view.View

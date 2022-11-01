@@ -3,7 +3,9 @@
 СДК предоставляет функционал для перенаправления пользователя для оплаты по СБП.
 
 ### Установка
+
 Подключите MavenCentral в build.gradle в корне проекта:
+
 ```kotlin
 allprojects {
     repositories {
@@ -11,10 +13,12 @@ allprojects {
     }
 }
 ```
+
 Подключение в dependencies:
+
 ```kotlin
 dependencies {
-    implementation("ru.raiffeisen:sbp-sdk:1.0.0")
+    implementation("ru.raiffeisen:sbp-sdk-android:1.0.0")
 }
 ```
 
@@ -28,7 +32,7 @@ SbpRedirectFragment.newInstance(
 
 ### Получение событий от SbpRedirectFragment
 
-Получение событий от SbpRedirectFragment происходит через FragmentResultListener.
+Получение событий от SbpRedirectFragment происходит через FragmentResultListener ([Документация по использованию Fragment Result API](https://developer.android.com/guide/fragments/communicate#fragment-result)).
 Для этого необходимо при создании SbpRedirectFragment указать resultKey,
 по этому ключу вы сможете прослушивать события:
 
@@ -70,3 +74,7 @@ fragmentManager.setFragmentResultListener(
     }
 }
 ```
+
+### Сборка семпл проекта
+Просто откройте проект в Android Studio и нажмите «Run».
+Так же в корне проекта есть уже собраный файл sample.apk

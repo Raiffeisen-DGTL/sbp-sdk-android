@@ -75,6 +75,6 @@ fragmentManager.setFragmentResultListener(
 }
 ```
 
-## Сборка семпл проекта
+### Сборка семпл проекта
 Просто откройте проект в Android Studio и нажмите «Run».
 Так же в корне проекта есть уже собраный файл sample.apk

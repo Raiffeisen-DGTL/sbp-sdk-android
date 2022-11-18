@@ -106,12 +106,6 @@ publishing {
     }
 }
 
-signing {
-    if (getExtraString("signing.keyId") != null) {
-        sign(publishing.publications)
-    }
-}
-
 tasks.create("raiffeisenSbpSdkPreload") {
     group = "build"
 

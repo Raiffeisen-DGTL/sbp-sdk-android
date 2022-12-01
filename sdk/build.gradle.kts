@@ -1,7 +1,6 @@
 import org.gradle.jvm.tasks.Jar
 import org.json.JSONObject
 import java.net.URL
-import java.util.Properties
 
 plugins {
     id("com.android.library")
@@ -73,7 +72,7 @@ publishing {
     }
 
     publications.create<MavenPublication>("release") {
-        version = "1.0.0"
+        version = "1.0.1"
         group = "ru.raiffeisen"
         artifactId = "sbp-sdk-android"
         artifact(javadocJar.get())

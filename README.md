@@ -4,21 +4,12 @@
 
 ### Установка
 
-Подключите MavenCentral в build.gradle в корне проекта:
-
-```kotlin
-allprojects {
-    repositories {
-        mavenCentral()
-    }
-}
-```
-
+Скачайте .jar файл.
 Подключение в dependencies:
 
 ```kotlin
 dependencies {
-    implementation("ru.raiffeisen:sbp-sdk-android:1.0.0")
+    implementation(files("path_to_jar/name.jar"))
 }
 ```
 
@@ -77,4 +68,4 @@ fragmentManager.setFragmentResultListener(
 
 ### Сборка семпл проекта
 Просто откройте проект в Android Studio и нажмите «Run».
-Так же в корне проекта есть уже собраный файл sample.apk
+Так же в корне проекта есть уже собранный файл sample.apk
